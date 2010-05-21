@@ -2,6 +2,7 @@
 #include "llfloatermessagerewriter.h"
 #include "lluictrlfactory.h"
 #include "llscrolllistctrl.h"
+#include "llcombobox.h"
 #include "lltexteditor.h"
 #include "llviewerwindow.h" // alertXml
 #include "llmessagetemplate.h"
@@ -80,7 +81,16 @@ void LLFloaterMessageRewriter::refreshRuleList()
 	if(selected_id.notNull()) scrollp->selectByID(selected_id);
 	if(scroll_pos < scrollp->getItemCount()) scrollp->setScrollPos(scroll_pos);
 	
-	//LLSD& messages = LLMessageConfigFile::instance().mMessages;
+	LLComboBox* messageChooser = sInstance->getChild<LLComboBox>("message_type");
+	
+	LLSD& messages = LLMessageConfigFile::instance().mMessages;
+	
+	LLSD::map_iterator map_end = messages.endMap();
+	for(LLSD::map_iterator map_iter = messages.beginMap() ; map_iter != map_end; ++map_iter)
+	{
+		std::string key((*map_iter).first);
+		messageChooser->add(key, ADD_BOTTOM, true);
+	}
 }
 // static
 void LLFloaterMessageRewriter::onClickSaveRules(void* user_data)

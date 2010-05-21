@@ -6,6 +6,16 @@
 		<column dynamicwidth="true" name="RuleName" label="Rule Name" />
 		<column name="direction" label="In/Out" width="24" />
 	</scroll_list>
+	<text bg_visible="false" border_drop_shadow_visible="false" border_visible="false"
+	     bottom_delta="-20" drop_shadow_visible="true" follows="left|top"
+	     font="SansSerifSmall" h_pad="0" halign="left" height="14" left_delta="4"
+	     mouse_opaque="true" name="message_type_lable" v_pad="0" width="80">
+		Message Type:
+	</text>
+	<combo_box allow_text_entry="false" bottom_delta="-24" follows="left|top" height="20"
+	     left_delta="0" max_chars="100" mouse_opaque="true"
+	     name="message_type" width="150">
+	</combo_box>
 	<text_editor name="rule_editor" follows="left|top|right|bottom" left="10" top="-300" bottom="30" right="-10" enabled="true" max_length="65535">
 	</text_editor>
 	<button name="save_rules" follows="right|bottom" left="210" top="-470" right="-10" bottom="10" label="Save Rules" enabled="true"/>
