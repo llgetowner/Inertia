@@ -5,6 +5,7 @@
 #include "lltexteditor.h"
 #include "llviewerwindow.h" // alertXml
 #include "llmessagetemplate.h"
+#include "llmessageconfig.h"
 #include <boost/tokenizer.hpp>
 #include "llmenugl.h"
 
@@ -78,6 +79,8 @@ void LLFloaterMessageRewriter::refreshRuleList()
 	
 	if(selected_id.notNull()) scrollp->selectByID(selected_id);
 	if(scroll_pos < scrollp->getItemCount()) scrollp->setScrollPos(scroll_pos);
+	
+	//LLSD& messages = LLMessageConfigFile::instance().mMessages;
 }
 // static
 void LLFloaterMessageRewriter::onClickSaveRules(void* user_data)
