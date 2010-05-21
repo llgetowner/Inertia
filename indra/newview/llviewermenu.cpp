@@ -232,6 +232,7 @@
 #include "dofloaterhex.h"
 #include "hgfloatertexteditor.h"
 #include "llfloatermessagelog.h"
+#include "llfloatermessagerewriter.h"
 #include "llfloatermessagebuilder.h"
 // </edit>
 
@@ -399,6 +400,7 @@ void handle_close_all_notifications(void*);
 void handle_reopen_with_hex_editor(void*);
 void handle_open_message_log(void*);
 void handle_open_message_builder(void*);
+void handle_open_message_rewriter(void*);
 // </edit>
 
 BOOL is_inventory_visible( void* user_data );
@@ -1044,6 +1046,7 @@ void init_client_menu(LLMenuGL* menu)
 										
 	menu->append(new LLMenuItemCallGL(  "Message Log", &handle_open_message_log, NULL));
 	menu->append(new LLMenuItemCallGL(  "Message Builder", &handle_open_message_builder, NULL));
+	menu->append(new LLMenuItemCallGL(  "Message Rewriter", &handle_open_message_rewriter, NULL));
 
 	// </edit>
 
@@ -3045,6 +3048,11 @@ void handle_reopen_with_hex_editor(void*)
 void handle_open_message_log(void*)
 {
 	LLFloaterMessageLog::show();
+}
+
+void handle_open_message_rewriter(void*)
+{
+	LLFloaterMessageRewriter::show();
 }
 
 void handle_open_message_builder(void*)
