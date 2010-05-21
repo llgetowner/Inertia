@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<floater name="Message Rewriter" title="Message Rewriter" width="400" min_width="400" height="600" min_height="600" can_close="true" can_resize="true" can_minimize="true">
+<floater name="Message Rewriter" title="Message Rewriter" width="400" min_width="400" height="500" min_height="500" can_close="true" can_resize="true" can_minimize="true">
 	<scroll_list column_padding="0" draw_heading="true" follows="left|top|right" left="10" top="-25"
-			  name="rule_list" search_column="0" right="-10" bottom="450">
+			  name="rule_list" search_column="0" right="-10" bottom="350">
 		<column name="icon_enabled" label="Enabled" width="24" />
 		<column dynamicwidth="true" name="RuleName" label="Rule Name" />
 		<column name="direction" label="In/Out" width="24" />
 	</scroll_list>
-	<text_editor name="rule_editor" follows="left|top|right|bottom" left="10" top="-400" bottom="30" right="-10" enabled="true" max_length="65535">
+	<text_editor name="rule_editor" follows="left|top|right|bottom" left="10" top="-300" bottom="30" right="-10" enabled="true" max_length="65535">
 	</text_editor>
-	<button name="save_rules" follows="right|bottom" left="210" top="-570" right="-10" bottom="10" label="Save Rules" enabled="true"/>
+	<button name="save_rules" follows="right|bottom" left="210" top="-470" right="-10" bottom="10" label="Save Rules" enabled="true"/>
 </floater>
