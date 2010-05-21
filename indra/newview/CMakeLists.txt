@@ -183,6 +183,7 @@ set(viewer_SOURCE_FILES
     llfloatermemleak.cpp
     llfloatermessagebuilder.cpp
     llfloatermessagelog.cpp
+    llfloatermessagerewriter.cpp
     llfloatermute.cpp
     llfloaternamedesc.cpp
     llfloaternewim.cpp
@@ -618,6 +619,7 @@ set(viewer_HEADER_FILES
     llfloatermemleak.h
     llfloatermessagebuilder.h
     llfloatermessagelog.h
+    llfloatermessagerewriter.h
     llfloatermute.h
     llfloaternamedesc.h
     llfloaternewim.h
