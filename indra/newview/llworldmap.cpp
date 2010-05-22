@@ -543,16 +543,7 @@ bool LLWorldMap::insertItem(U32 x_world, U32 y_world, std::string& name, LLUUID&
 			break;
 		}
 		case MAP_ITEM_AGENT_LOCATIONS: // agent locations
-		{
-			/*
-			//<edit> yes, we like to know who it is who's there!
-			std::string avFullName;
-			
-			gCacheName->getFullName(uuid, avFullName);
-			
- 			LL_INFOS("World Map") << "New Location " << avFullName << LL_ENDL;
- 			//</edit>
- 			*/
+		{ 			
 			if (extra > 0)
 			{
 				new_item.setCount(extra);
