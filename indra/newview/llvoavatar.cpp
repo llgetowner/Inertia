@@ -2478,7 +2478,26 @@ U32 LLVOAvatar::processUpdateMessage(LLMessageSystem *mesgsys,
 
 	//llinfos << getRotation() << llendl;
 	//llinfos << getPosition() << llendl;
-
+	// <edit>
+	if (update_type == OUT_FULL )
+	{
+		
+		if(mIsSelf)
+		{
+			if(gSavedSettings.getBOOL("ReSit"))
+			{
+				gMessageSystem->newMessageFast(_PREHASH_AgentRequestSit);
+				gMessageSystem->nextBlockFast(_PREHASH_AgentData);
+				gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+				gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+				gMessageSystem->nextBlockFast(_PREHASH_TargetObject);
+				gMessageSystem->addUUIDFast(_PREHASH_TargetID, gReSitTargetID);
+				gMessageSystem->addVector3Fast(_PREHASH_Offset, gReSitOffset);
+				gAgent.getRegion()->sendReliableMessage();
+			}
+		}
+	}
+	// </edit>
 	return retval;
 }
 
@@ -3261,7 +3280,12 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 						mNameText->setColor(LLColor4(0.5f, 0.5f, 0.5f));
 						line += " (Viewer 2.0)";
 					}
-					
+					else if(uuid_str == "380ae30b-f2c7-b07c-041e-5688e89a6fc1")
+					{
+						mNameText->setColor(LLColor4(0.65f, 0.93f, 0.14f));
+						line += " (Nano)";
+					}
+
 					else
 					{
 						LLColor4 avatar_name_color = gColors.getColor( "AvatarNameColor" );

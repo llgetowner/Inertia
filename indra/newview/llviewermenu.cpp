@@ -1038,16 +1038,33 @@ void init_client_menu(LLMenuGL* menu)
 
 	// <edit>
 	menu->appendSeparator();
-	menu->append(new LLMenuItemCallGL(	"Close All Dialogs", 
-										&handle_close_all_notifications, NULL, NULL, 'D', MASK_CONTROL | MASK_ALT | MASK_SHIFT));
+	{
+		LLMenuGL* sub = NULL;
+		sub = new LLMenuGL("Useful Features");
+		sub->append(new LLMenuItemCallGL(	"Close All Dialogs", 
+											&handle_close_all_notifications, NULL, NULL, 'D', MASK_CONTROL | MASK_ALT | MASK_SHIFT));
 
-	menu->append(new LLMenuItemCallGL(	"Reopen with Hex Editor", 
-										&handle_reopen_with_hex_editor, NULL));	
+		sub->append(new LLMenuItemCallGL(	"Reopen with Hex Editor", 
+											&handle_reopen_with_hex_editor, NULL));	
 										
-	menu->append(new LLMenuItemCallGL(  "Message Log", &handle_open_message_log, NULL));
-	menu->append(new LLMenuItemCallGL(  "Message Builder", &handle_open_message_builder, NULL));
-	menu->append(new LLMenuItemCallGL(  "Message Rewriter", &handle_open_message_rewriter, NULL));
+		sub->append(new LLMenuItemCallGL(  "Message Log", &handle_open_message_log, NULL));
+		sub->append(new LLMenuItemCallGL(  "Message Builder", &handle_open_message_builder, NULL));
+		sub->append(new LLMenuItemCallGL(  "Message Rewriter", &handle_open_message_rewriter, NULL));		
 
+		sub->append(new LLMenuItemCheckGL( "Nimble",
+											&menu_toggle_control,
+											NULL,
+											&menu_check_control,
+											(void*)"Nimble"));
+		sub->append(new LLMenuItemCheckGL( "ReSit",
+											&menu_toggle_control,
+											NULL,
+											&menu_check_control,
+											(void*)"ReSit"));
+		//these should always be last in a sub menu
+		sub->createJumpKeys();
+		menu->appendMenu(sub);
+	}
 	// </edit>
 
 	menu->createJumpKeys();
@@ -3217,6 +3234,10 @@ bool handle_sit_or_stand()
 
 	if (object && object->getPCode() == LL_PCODE_VOLUME)
 	{
+		// <edit>
+		gReSitTargetID = object->mID;
+		gReSitOffset = pick.mObjectOffset;
+		// </edit>
 		gMessageSystem->newMessageFast(_PREHASH_AgentRequestSit);
 		gMessageSystem->nextBlockFast(_PREHASH_AgentData);
 		gMessageSystem->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
