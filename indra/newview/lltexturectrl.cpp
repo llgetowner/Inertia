@@ -161,6 +161,9 @@ public:
 	static void		onBtnWhite( void* userdata );
 	static void		onBtnInvisible( void* userdata );
 	static void		onBtnNone( void* userdata );
+//<edit>
+	static void		onBtnCpToInv( void* userdata );
+//</edit>
 	static void		onBtnClear( void* userdata );
 	static void		onSelectionChange(const std::deque<LLFolderViewItem*> &items, BOOL user_action, void* data);
 	static void		onShowFolders(LLUICtrl* ctrl, void* userdata);
@@ -241,7 +244,9 @@ LLFloaterTexturePicker::LLFloaterTexturePicker(
 	childSetAction("Blank", LLFloaterTexturePicker::onBtnWhite,this);
 	childSetAction("Invisible", LLFloaterTexturePicker::onBtnInvisible,this);
 
-		
+//<edit>
+	childSetAction("CpToInv", LLFloaterTexturePicker::onBtnCpToInv,this);
+//</edit>		
 	childSetCommitCallback("show_folders_check", onShowFolders, this);
 	childSetVisible("show_folders_check", FALSE);
 	
@@ -587,7 +592,7 @@ void LLFloaterTexturePicker::draw()
 		childSetEnabled("Blank",   mImageAssetID != mWhiteImageAssetID );
 		childSetEnabled("Invisible", mOwner->getAllowInvisibleTexture() && mImageAssetID != mInvisibleImageAssetID );
 		childSetEnabled("None", mOwner->getAllowNoTexture() && !mImageAssetID.isNull() );
-
+		childSetEnabled("CpToInv", !mImageAssetID.isNull() );
 		LLFloater::draw();
 
 		if( isMinimized() )
@@ -736,7 +741,67 @@ void LLFloaterTexturePicker::onBtnNone(void* userdata)
 	self->setImageID( LLUUID::null );
 	self->commitIfImmediateSet();
 }
+//<edit>
 
+void LLFloaterTexturePicker::onBtnCpToInv(void* userdata)
+{
+
+	LLFloaterTexturePicker* self = (LLFloaterTexturePicker*) userdata;
+
+	LLUUID mUUID = self->mImageAssetID;
+	LLAssetType::EType asset_type = LLAssetType::AT_TEXTURE;
+	LLInventoryType::EType inv_type = LLInventoryType::IT_TEXTURE;
+	LLUUID folder_id(gInventory.findCategoryUUIDForType(asset_type));
+	if(folder_id.notNull())
+	{
+		std::string name;
+		name.assign("temp.");
+		name.append(mUUID.asString());
+		LLUUID item_id;
+		item_id.generate();
+		LLPermissions perm;
+			perm.init(gAgentID,
+			gAgentID,
+			LLUUID::null,
+			LLUUID::null);
+		U32 next_owner_perm = PERM_MOVE | PERM_TRANSFER;
+			perm.initMasks(PERM_ALL,
+				   PERM_ALL,
+				   PERM_NONE,
+				   PERM_NONE,
+				   next_owner_perm);
+		S32 creation_date_now = time_corrected();
+		LLPointer<LLViewerInventoryItem> item
+			= new LLViewerInventoryItem(item_id,
+								folder_id,
+								perm,
+								mUUID,
+								asset_type,
+								inv_type,
+								name,
+								"",
+								LLSaleInfo::DEFAULT,
+								LLInventoryItem::II_FLAGS_NONE,
+								creation_date_now);
+		item->updateServer(TRUE);
+		gInventory.updateItem(item);
+		gInventory.notifyObservers();
+		LLInventoryView* view = LLInventoryView::getActiveInventory();
+		if(view)
+		{
+			LLFocusableElement* focus_ctrl = gFocusMgr.getKeyboardFocus();
+			view->getPanel()->setSelection(item_id, TAKE_FOCUS_NO);
+			view->getPanel()->openSelected();
+			gFocusMgr.setKeyboardFocus(focus_ctrl);
+		}
+	}
+	else
+	{
+		llwarns << "Can't find a folder to put it in" << llendl;
+	}
+
+}
+//</edit>
 /*
 // static
 void LLFloaterTexturePicker::onBtnRevert(void* userdata)
